@@ -1,5 +1,5 @@
 # fictional-university-theme
 
-##About
+## About
 
 First practice project for WordPress following Udemy course: Become a Wordpress Developer. 
