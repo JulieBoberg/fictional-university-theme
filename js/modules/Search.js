@@ -60,7 +60,8 @@ getResults(){
         <h2 class="search-overlay__section-title">General Information</h2>
        ${combinedResults.length ? ' <ul class="link-list min-list">' : '<p>No general information matches that search term</p>' }
        
-        ${combinedResults.map(post => `<li><a href="${post.link}">${post.title.rendered}</a></li>`).join('')}
+        ${combinedResults.map(post => `<li><a href="${post.link}">${post.title.rendered}</a>
+        ${post.type == 'post' ? `by ${post.authorName}` : '' }</li>`).join('')}
        ${combinedResults.length ? '</ul>' : ''} 
         `)
         this.isSpinnerVisible = false;
