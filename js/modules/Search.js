@@ -122,6 +122,7 @@ openOverlay(){
     setTimeout(()=>  this.searchField.focus(), 301);
     
     this.isOverlayOpen = true;
+    //return false; 
 
 }
 closeOverlay(){

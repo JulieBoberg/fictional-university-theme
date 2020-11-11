@@ -52,8 +52,8 @@ function university_files(){
     wp_enqueue_script('main-university-js', 'http://localhost:3000/bundled.js', NULL, '1.0', true);
    }else{
     wp_enqueue_script('our-vendors-js', get_theme_file_uri('/bundled-assets/vendors~scripts.9678b4003190d41dd438.js'), NULL, '1.0', true);
-    wp_enqueue_script('main-university', get_theme_file_uri('/bundled-assets/scripts.78553eb43e39cdbb46b2.js'), NULL, '1.0', true);
-    wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.78553eb43e39cdbb46b2.css'));
+    wp_enqueue_script('main-university', get_theme_file_uri('/bundled-assets/scripts.85eb1199873222ddcf7d.js'), NULL, '1.0', true);
+    wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.85eb1199873222ddcf7d.css'));
    } 
    wp_localize_script('main-university-js', 'universityData', array(
       'root_url' => get_site_url()
@@ -99,8 +99,57 @@ if(!is_admin() AND is_post_type_archive('program') AND is_main_query() ){
         ));
    }
 }
-add_action('pre_get_posts', 'university_adjust_queries')
+add_action('pre_get_posts', 'university_adjust_queries');
 
+
+add_action('admin_init', 'redirectSubsToFrontend');
+
+function redirectSubsToFrontend(){
+   $currentUser = wp_get_current_user();
+
+   if(count($currentUser -> roles) == 1 AND
+    $currentUser->roles[0]== 'subscriber'){
+      wp_redirect(site_url('/'));
+      exit;
+   }
+}
+
+
+//copied
+add_action('wp_loaded', 'noSubsAdminBar');
+
+function noSubsAdminBar(){
+   $currentUser = wp_get_current_user();
+
+   if(count($currentUser -> roles) == 1 AND
+    $currentUser->roles[0]== 'subscriber'){
+    
+      show_admin_bar(false);
+     
+   }
+}
+
+
+add_filter('login_headerurl', 'ourHeaderUrl');
+
+function ourHeaderUrl(){
+   return esc_url(site_url('/'));
+}
+
+
+add_action('login_enqueue_scripts', 'ourLoginCSS');
+
+function ourLoginCSS(){
+   wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+   wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.85eb1199873222ddcf7d.css'));
+}
+
+add_filter('login_headertitle', 'ourLoginHeader');
+
+function ourLoginHeader(){
+
+   return get_bloginfo('name');
+}
 
 ?>
 
